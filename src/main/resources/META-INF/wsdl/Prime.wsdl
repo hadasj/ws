@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TestService"
+ targetNamespace="urn:i.cz"
+ xmlns:tns="urn:i.cz"
+ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:ns1="urn:i.cz"
+ xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+ xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+
+<!-- definice typů -->
+<types>
+ <schema targetNamespace="urn:i.cz"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns="http://www.w3.org/2001/XMLSchema"
+     elementFormDefault="unqualified"
+     attributeFormDefault="unqualified">
+  <element name="cislo" type="xsd:long"/>
+  <element name="vysledek" type="xsd:boolean"/>
+ </schema>
+</types>
+
+
+<!-- komunikační zprávy -->
+<message name="isPrimeRequest">
+ <part name="cislo" element="ns1:cislo"/>
+</message>
+<message name="isPrimeResponse">
+ <part name="vysledek" element="ns1:vysledek"/>
+</message>
+
+
+<!-- dostupné operace -->
+<portType name="WsPort">
+ <operation name="isPrime">
+  <input message="tns:isPrimeRequest"/>
+  <output message="tns:isPrimeResponse"/>
+ </operation>
+</portType>
+
+
+<!-- volatelné přes HTTP -->
+<binding name="TestService" type="tns:WsPort">
+ <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+ <operation name="isPrime">
+  <SOAP:operation  soapAction="isPrime"/>
+  <input>
+   <SOAP:body use="literal"/>
+  </input>
+  <output>
+   <SOAP:body use="literal"/>
+  </output>
+ </operation>
+</binding>
+
+
+<!-- adresy komunikačních bodů -->
+<service name="TestService">
+ <documentation>Sluzba pocitajici prvocisla</documentation>
+ <port name="TestService" binding="tns:TestService">
+  <SOAP:address location="http://localhost:8080"/>
+ </port>
+</service>
+</definitions>
