@@ -10,15 +10,15 @@ public class MathService {
   private static final Logger LOG = LoggerFactory.getLogger(MathService.class);
 
   public boolean isPrime(final long number) {
-    //TODO: improve stupid implementation
-
     if (number < 2) {
       // first prime is 2
       LOG.debug("number {} is too small - NOT prime", number);
       return false;
     }
 
-    for (int divider = 2; divider < number; divider++) {
+    final long limit = Math.round(Math.sqrt(number));
+
+    for (int divider = 2; divider < limit; divider++) {
       // X modulo divider is 0 (NO divide remainder) -> X is divisible by divider
       if (number % divider == 0) {
         LOG.debug("number {} is divisible by {}, NOT prime", number, divider);
